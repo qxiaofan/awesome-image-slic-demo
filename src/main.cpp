@@ -50,5 +50,26 @@ int main(int argc,char** argv)
     cv::imwrite("slic_image.png",image);
     cv::waitKey(0);
 
+    std::vector<std::vector<cv::Point>> spPoints;
+
+    slic.getClusterPoints(spPoints);
+
+    cv::Mat slic_img(height, width, CV_8UC3, cv::Scalar(0,0,0));
+    
+    for (int i = 0, size = spPoints.size(); i < size; ++i) {
+
+         uint8_t r = rand() % 256;
+         uint8_t g = rand() % 256;
+         uint8_t b = rand() % 256;
+         cv::Vec3b color(b,g,r);
+         for (auto &pt : spPoints[i]) {
+             slic_img.at<cv::Vec3b>(pt) = color;
+         }
+
+   }
+   cv::namedWindow("slic_img",1);
+   cv::imshow("slic_img",slic_img);
+   cv::waitKey();
+
    return 1;
 }
